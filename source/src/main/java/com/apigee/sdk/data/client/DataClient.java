@@ -971,6 +971,25 @@ public class DataClient {
     	return response;
     }
     
+    /**
+  	 * Update an existing entity on the server. Properties
+  	 * must include a "type" property. Executes asynchronously in background and
+  	 * the callbacks are called in the UI thread.
+  	 *
+  	 * @param entityID
+  	 * @param updatedProperties
+         * @param callback
+  	 */
+    public void updateEntityAsync(final String entityID, final Map<String, Object> updatedProperties,
+                                  final ApiResponseCallback callback) {
+  		(new ClientAsyncTask<ApiResponse>(callback) {
+  			@Override
+  			public ApiResponse doTask() {
+  				return updateEntity(entityID, updatedProperties);
+  			}
+  		}).execute();
+    }    
+    
     public ApiResponse updateUserPassword(String usernameOrEmail, String oldPassword, String newPassword) {
     	Map<String,Object> updatedProperties = new HashMap<String,Object>();
     	updatedProperties.put("oldpassword", oldPassword);
@@ -994,6 +1013,25 @@ public class DataClient {
     	ApiResponse response = apiRequest(HTTP_METHOD_DELETE, null, null,
     			organizationId, applicationId, entityType, entityID);
     	return response;
+    }
+
+    /**
+  	 * Remove an exsiting entity on the server.
+  	 * Executes asynchronously in background and
+  	 * the callbacks are called in the UI thread.
+  	 *
+  	 * @param entityType
+         * @param entityID
+  	 * @param callback
+  	 */
+    public void removeEntityAsync(final String entityType, final String entityID,
+                                  final ApiResponseCallback callback) {
+  		(new ClientAsyncTask<ApiResponse>(callback) {
+  			@Override
+  			public ApiResponse doTask() {
+  				return removeEntity(entityType, entityID);
+  			}
+  		}).execute();
     }
 
     /**
